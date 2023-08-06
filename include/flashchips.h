@@ -597,6 +597,8 @@
 #define NANTRONICS_N25S80		0x3014
 #define NANTRONICS_N25S16		0x3015
 
+#define NORDIC_ID		0x7F7F68	/* Nordic Semiconductor resides in bank 3 */
+
 /*
  * Programmable Micro Corp is listed in JEP106W in bank 2, so it should
  * have a 0x7F continuation code prefix.

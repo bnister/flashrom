@@ -13085,6 +13085,38 @@ const struct flashchip flashchips[] = {
 		.voltage	= {2700, 3600},
 	},
 
+
+	{
+		.vendor		= "Nordic Semiconductor",
+		.name		= "NRF24LU1P-F16",
+		.bustype	= BUS_SPI,
+		.manufacture_id	= NORDIC_ID, /* FIXME not actually reported */
+		.total_size	= 16,
+		.page_size	= 256, /* FIXME 512 actually but it doesn't work */
+		.feature_bits	= FEATURE_WRSR_WREN,
+		.tested		= TEST_OK_PREWB,
+		.probe		= PROBE_NRF24,
+		.probe_timing	= TIMING_ZERO,
+		.block_erasers	=
+		{
+			/* check_erased_range (and reads in general) are failing for my chip
+			{
+				.eraseblocks = { {512, 32} },
+				.block_erase = SPI_BLOCK_ERASE_52,
+			},
+			*/
+			{
+				.eraseblocks = { {16 * 1024, 1} },
+				.block_erase = SPI_BLOCK_ERASE_62,
+			},
+		},
+		/* TODO InfoPage accessed through INFEN bit in FSR */
+		.printlock	= PRINT_NRF24_FSR,
+		.write		= SPI_CHIP_WRITE256,
+		.read		= SPI_CHIP_READ,
+		.voltage	= {3050, 3500},
+	},
+
 	{
 		.vendor		= "PMC",
 		.name		= "Pm25LD010(C)",

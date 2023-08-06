@@ -310,8 +310,13 @@ static int spi_poll_wip(struct flashctx *const flash, const unsigned int poll_de
 		int ret = spi_read_register(flash, STATUS1, &status);
 		if (ret)
 			return ret;
-		if (!(status & SPI_SR_WIP))
-			return 0;
+		if (flash->chip->manufacture_id == NORDIC_ID) { /* FIXME */
+			if (!(status & SPI_SR_RDYN))
+				return 0;
+		} else {
+			if (!(status & SPI_SR_WIP))
+				return 0;
+		}
 
 		programmer_delay(flash, poll_delay);
 	}
@@ -392,7 +397,11 @@ int spi_set_extended_address(struct flashctx *const flash, const uint8_t addr_hi
 static int spi_prepare_address(struct flashctx *const flash, uint8_t cmd_buf[],
 			       const bool native_4ba, const unsigned int addr)
 {
-	if (native_4ba || flash->in_4ba_mode) {
+	if (flash->chip->manufacture_id == NORDIC_ID) { /* FIXME */
+		cmd_buf[1] = (addr >>  8) & 0xff;
+		cmd_buf[2] = (addr >>  0) & 0xff;
+		return 2;
+	} else if (native_4ba || flash->in_4ba_mode) {
 		if (!spi_master_4ba(flash)) {
 			msg_cwarn("4-byte address requested but master can't handle 4-byte addresses.\n");
 			return -1;

@@ -85,6 +85,7 @@ srcs = files(
   'printlock.c',
   'layout.c',
   'libflashrom.c',
+  'nrf24.c',
   'opaque.c',
   'parallel.c',
   'print.c',

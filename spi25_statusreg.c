@@ -20,6 +20,7 @@
 #include <stdlib.h>
 
 #include "flash.h"
+#include "flashchips.h"
 #include "chipdrivers.h"
 #include "programmer.h"
 #include "spi.h"
@@ -171,6 +172,10 @@ int spi_write_register(const struct flashctx *flash, enum flash_reg reg, uint8_t
 		msg_cerr("%s failed during command execution\n", __func__);
 		return result;
 	}
+
+	/* NRF24 doesn't require WIP polling after WRSR */
+	if (flash->chip->manufacture_id == NORDIC_ID) /* FIXME */
+		return 0;
 
 	/*
 	 * WRSR performs a self-timed erase before the changes take effect.
@@ -1080,6 +1085,7 @@ printlockfunc_t *lookup_printlock_func_ptr(struct flashctx *flash)
 		case SPI_PRETTYPRINT_STATUS_REGISTER_SST25: return &spi_prettyprint_status_register_sst25;
 		case SPI_PRETTYPRINT_STATUS_REGISTER_SST25VF016: return &spi_prettyprint_status_register_sst25vf016;
 		case SPI_PRETTYPRINT_STATUS_REGISTER_SST25VF040B: return &spi_prettyprint_status_register_sst25vf040b;
+		case PRINT_NRF24_FSR: return &print_nrf24_fsr;
 	/* default: non-total function, 0 indicates no unlock function set.
 	 * We explicitly do not want a default catch-all case in the switch
 	 * to ensure unhandled enum's are compiler warnings.

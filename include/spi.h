@@ -144,6 +144,8 @@
 /* Status Register Bits */
 #define SPI_SR_WIP	(0x01 << 0)
 #define SPI_SR_WEL	(0x01 << 1)
+#define SPI_SR_INFEN	(0x01 << 3)	/* specific to NRF24 chips */
+#define SPI_SR_RDYN	(0x01 << 4)	/* specific to NRF24 chips */
 #define SPI_SR_ERA_ERR	(0x01 << 5)
 #define SPI_SR_AAI	(0x01 << 6)
 

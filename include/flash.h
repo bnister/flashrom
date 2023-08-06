@@ -251,6 +251,7 @@ enum probe_func {
 	PROBE_SPI_RES2,
 	PROBE_SPI_SFDP,
 	PROBE_SPI_ST95,
+	PROBE_NRF24,
 };
 
 enum write_func {
@@ -394,6 +395,7 @@ enum printlock_func {
 	SPI_PRETTYPRINT_STATUS_REGISTER_SST25,
 	SPI_PRETTYPRINT_STATUS_REGISTER_SST25VF016,
 	SPI_PRETTYPRINT_STATUS_REGISTER_SST25VF040B,
+	PRINT_NRF24_FSR,
 };
 typedef int (printlockfunc_t)(struct flashctx *flash);
 printlockfunc_t *lookup_printlock_func_ptr(struct flashctx *flash);
